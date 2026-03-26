@@ -1,0 +1,83 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Brookfield Digital — Enterprise-grade software for everyday businesses",
+  description = "We build the infrastructure funded startups spend months on — for businesses that can't wait. SaaS platforms, operational tools, and commerce infrastructure.",
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen">
+    <!-- Nav -->
+    <nav class="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
+      <div class="mx-auto max-w-7xl px-6 py-6 flex items-center justify-between">
+        <a href="/" class="text-white text-sm font-medium tracking-wide uppercase">
+          Brookfield Digital
+        </a>
+        <a
+          href="#contact"
+          class="text-white text-sm font-medium tracking-wide uppercase hover:opacity-70 transition-opacity"
+        >
+          Get in touch
+        </a>
+      </div>
+    </nav>
+
+    <slot />
+
+    <!-- Footer -->
+    <footer class="bg-ink text-cream px-6 py-16">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+          <div>
+            <p class="text-sm font-medium tracking-wide uppercase mb-4">Brookfield Digital, LLC</p>
+            <p class="text-cream/60 text-sm leading-relaxed">
+              Baltimore, MD<br />
+              Enterprise-grade software<br />
+              for everyday businesses.
+            </p>
+          </div>
+          <div>
+            <p class="text-sm font-medium tracking-wide uppercase mb-4">Work</p>
+            <ul class="space-y-2 text-sm text-cream/60">
+              <li><a href="#picket" class="hover:text-cream transition-colors">Picket</a></li>
+              <li><a href="#ridgeline" class="hover:text-cream transition-colors">Ridgeline</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-sm font-medium tracking-wide uppercase mb-4">Contact</p>
+            <ul class="space-y-2 text-sm text-cream/60">
+              <li><a href="tel:+14432197137" class="hover:text-cream transition-colors">(443) 219-7137</a></li>
+              <li><a href="mailto:eric@brkdllc.com" class="hover:text-cream transition-colors">eric@brkdllc.com</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-16 pt-8 border-t border-cream/10 text-xs text-cream/40">
+          &copy; {new Date().getFullYear()} Brookfield Digital, LLC. All rights reserved.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

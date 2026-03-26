@@ -1,0 +1,310 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <!-- ===== HERO ===== -->
+  <section class="relative min-h-screen flex items-center bg-ink text-cream overflow-hidden">
+    <!-- Subtle grain texture overlay -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-repeat: repeat; background-size: 256px 256px;"></div>
+
+    <div class="relative mx-auto max-w-7xl px-6 py-32 md:py-0">
+      <div class="max-w-4xl">
+        <p class="text-copper text-sm font-medium tracking-widest uppercase mb-8 fade-up">
+          Software studio &middot; Baltimore, MD
+        </p>
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display tracking-tight mb-8 fade-up fade-up-delay-1">
+          Enterprise-grade software for everyday businesses.
+        </h1>
+        <p class="text-lg md:text-xl text-cream/60 max-w-2xl leading-relaxed mb-12 fade-up fade-up-delay-2">
+          We build the infrastructure that funded startups spend months on &mdash;
+          for businesses that can&rsquo;t wait. Full-stack platforms, not prototypes.
+        </p>
+        <div class="flex flex-wrap gap-4 fade-up fade-up-delay-3">
+          <a
+            href="#work"
+            class="inline-flex items-center gap-2 bg-copper hover:bg-copper-dark text-cream px-6 py-3 text-sm font-medium tracking-wide transition-colors"
+          >
+            See our work
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+          <a
+            href="#contact"
+            class="inline-flex items-center gap-2 border border-cream/20 hover:border-cream/40 text-cream px-6 py-3 text-sm font-medium tracking-wide transition-colors"
+          >
+            Get in touch
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-cream/30">
+      <div class="w-px h-12 bg-gradient-to-b from-transparent to-cream/30"></div>
+    </div>
+  </section>
+
+  <!-- ===== WORK SECTION ===== -->
+  <section id="work" class="px-6 py-section-sm md:py-section">
+    <div class="mx-auto max-w-7xl">
+      <p class="text-copper text-sm font-medium tracking-widest uppercase mb-4">Work</p>
+      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-6 max-w-3xl">
+        Products that run real businesses.
+      </h2>
+      <p class="text-ink-muted text-lg max-w-2xl mb-20">
+        We don&rsquo;t build demos. Every product below is in production, handling
+        real money, real logistics, and real decisions.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== PICKET CASE STUDY ===== -->
+  <section id="picket" class="px-6 pb-section-sm md:pb-section">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <!-- Copy -->
+        <div class="lg:sticky lg:top-32">
+          <div class="inline-flex items-center gap-2 text-sm font-medium text-forest tracking-widest uppercase mb-6">
+            <span class="w-8 h-px bg-forest"></span>
+            Case Study
+          </div>
+          <h2 class="text-4xl md:text-5xl mb-6">Picket</h2>
+          <p class="text-xl text-ink-muted mb-8 leading-relaxed">
+            The online storefront for flower farms, market gardens,
+            and backyard businesses.
+          </p>
+          <p class="text-ink-muted leading-relaxed mb-6">
+            Picket gives a flower farm the same infrastructure a funded DTC brand
+            would spend months building &mdash; multi-tenant storefronts, Stripe Connect
+            payment processing, delivery route optimization, and subscription management.
+            Zero cost to start.
+          </p>
+          <ul class="space-y-3 mb-8">
+            {[
+              "Multi-tenant storefronts with custom domains",
+              "Stripe Connect for marketplace payments",
+              "Delivery route optimization & zone management",
+              "Subscription & seasonal inventory management",
+              "Mobile-ready order management dashboard",
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-sm text-ink-muted">
+                <span class="mt-1 w-1.5 h-1.5 rounded-full bg-copper shrink-0"></span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p class="text-xs text-ink-subtle tracking-wide uppercase">
+            SaaS &middot; Commerce &middot; Logistics
+          </p>
+        </div>
+
+        <!-- Visual -->
+        <div class="space-y-6">
+          <div class="bg-forest rounded-2xl p-8 md:p-12 text-cream">
+            <p class="font-display text-3xl md:text-4xl mb-4 italic">
+              &ldquo;Take orders. Deliver locally. Keep your Sundays.&rdquo;
+            </p>
+            <p class="text-cream/60 text-sm">
+              Picket headline &mdash; capturing the promise in seven words
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="bg-cream-dark rounded-xl p-6">
+              <p class="text-3xl font-display mb-1">$0</p>
+              <p class="text-sm text-ink-muted">to start selling</p>
+            </div>
+            <div class="bg-cream-dark rounded-xl p-6">
+              <p class="text-3xl font-display mb-1">2%</p>
+              <p class="text-sm text-ink-muted">service fee, no monthly</p>
+            </div>
+          </div>
+          <div class="bg-cream-dark rounded-xl p-8">
+            <p class="text-sm font-medium tracking-wide uppercase text-ink-subtle mb-4">How it works</p>
+            <ol class="space-y-4">
+              {[
+                { step: "01", text: "Customer places an order on your storefront" },
+                { step: "02", text: "Order lands on your dashboard with delivery details" },
+                { step: "03", text: "Delivery zones sort the route automatically" },
+                { step: "04", text: "Deliver, mark done. Home before lunch." },
+              ].map(({ step, text }) => (
+                <li class="flex gap-4 items-baseline">
+                  <span class="text-copper font-mono text-xs">{step}</span>
+                  <span class="text-sm text-ink-muted">{text}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RIDGELINE CASE STUDY ===== -->
+  <section id="ridgeline" class="bg-ink text-cream px-6 py-section-sm md:py-section">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <!-- Visual (left on desktop) -->
+        <div class="space-y-6 order-2 lg:order-1">
+          <div class="bg-charcoal rounded-2xl p-8 md:p-12">
+            <p class="font-display text-3xl md:text-4xl mb-4 italic text-copper">
+              &ldquo;DD sprint becomes the ops platform post-close.&rdquo;
+            </p>
+            <p class="text-cream/40 text-sm">
+              One system from diligence through operations
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="bg-charcoal rounded-xl p-6">
+              <p class="text-3xl font-display text-cream mb-1">PE</p>
+              <p class="text-sm text-cream/50">grade infrastructure</p>
+            </div>
+            <div class="bg-charcoal rounded-xl p-6">
+              <p class="text-3xl font-display text-cream mb-1">API</p>
+              <p class="text-sm text-cream/50">first architecture</p>
+            </div>
+          </div>
+          <div class="bg-charcoal rounded-xl p-8">
+            <p class="text-sm font-medium tracking-wide uppercase text-cream/40 mb-4">Capabilities</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {[
+                "Component-level risk scoring",
+                "Configurable weight models",
+                "Explainable output reports",
+                "REST API integration",
+                "Multi-site portfolio views",
+                "Historical trend analysis",
+              ].map((item) => (
+                <div class="flex items-start gap-3 text-sm text-cream/60">
+                  <span class="mt-1 w-1.5 h-1.5 rounded-full bg-copper shrink-0"></span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Copy (right on desktop) -->
+        <div class="lg:sticky lg:top-32 order-1 lg:order-2">
+          <div class="inline-flex items-center gap-2 text-sm font-medium text-copper tracking-widest uppercase mb-6">
+            <span class="w-8 h-px bg-copper"></span>
+            Case Study
+          </div>
+          <h2 class="text-4xl md:text-5xl mb-6">Ridgeline</h2>
+          <p class="text-xl text-cream/60 mb-8 leading-relaxed">
+            PE-grade wind asset due diligence as a focused SaaS
+            a two-person deal team can use before their LOI expires.
+          </p>
+          <p class="text-cream/50 leading-relaxed mb-6">
+            Ridgeline delivers the due diligence infrastructure that large energy
+            firms build in-house &mdash; component-level risk scoring, configurable
+            weight models, explainable output &mdash; as a platform that works for
+            smaller teams on tighter timelines. Your DD sprint becomes the ops
+            platform you use post-close.
+          </p>
+          <p class="text-xs text-cream/30 tracking-wide uppercase">
+            SaaS &middot; Energy &middot; Due Diligence
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHAT WE BUILD ===== -->
+  <section id="services" class="px-6 py-section-sm md:py-section">
+    <div class="mx-auto max-w-7xl">
+      <p class="text-copper text-sm font-medium tracking-widest uppercase mb-4">What we build</p>
+      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-16 max-w-3xl">
+        Products, not prototypes.
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-stone">
+        {[
+          {
+            title: "SaaS Platforms",
+            desc: "Multi-tenant systems with billing, auth, and the ops layer most MVPs skip. Built to scale from day one.",
+          },
+          {
+            title: "Commerce Infrastructure",
+            desc: "Storefronts, payment processing, subscription management, and fulfillment logistics for businesses selling online.",
+          },
+          {
+            title: "Operational Tools",
+            desc: "Dashboards, workflow engines, and data pipelines that replace the spreadsheet your team has outgrown.",
+          },
+          {
+            title: "Data & Analytics",
+            desc: "Scoring models, risk frameworks, and reporting systems that turn raw data into decisions.",
+          },
+        ].map(({ title, desc }, i) => (
+          <div class="bg-cream p-8 md:p-12">
+            <span class="text-xs font-mono text-ink-subtle">0{i + 1}</span>
+            <h3 class="text-2xl md:text-3xl mt-3 mb-4">{title}</h3>
+            <p class="text-ink-muted leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== APPROACH ===== -->
+  <section class="px-6 pb-section-sm md:pb-section">
+    <div class="mx-auto max-w-7xl">
+      <div class="bg-cream-dark rounded-2xl p-8 md:p-16">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+          <div>
+            <p class="text-copper text-sm font-medium tracking-widest uppercase mb-4">How we work</p>
+            <h2 class="text-3xl md:text-4xl mb-6">
+              Small team. High output. No layers.
+            </h2>
+          </div>
+          <div class="space-y-6 text-ink-muted leading-relaxed">
+            <p>
+              We&rsquo;re a software studio, not an agency with account managers and
+              status meetings. You talk to the people writing the code. Decisions
+              happen in hours, not weeks.
+            </p>
+            <p>
+              Every engagement starts with a focused build sprint. We ship working
+              software early and iterate from real usage &mdash; not slide decks.
+              The first version is production-ready, not a proof of concept.
+            </p>
+            <p>
+              We specialize in the kind of software that mid-market businesses
+              need but enterprise vendors price out of reach &mdash; and that
+              freelancers can&rsquo;t build to last.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="px-6 pb-section-sm md:pb-section">
+    <div class="mx-auto max-w-7xl text-center">
+      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-6">
+        Let&rsquo;s build something.
+      </h2>
+      <p class="text-ink-muted text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+        Tell us what you&rsquo;re working on. We&rsquo;ll tell you how we&rsquo;d build it
+        &mdash; and whether we&rsquo;re the right team.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="mailto:eric@brkdllc.com"
+          class="inline-flex items-center gap-2 bg-ink hover:bg-charcoal text-cream px-8 py-4 text-sm font-medium tracking-wide transition-colors"
+        >
+          eric@brkdllc.com
+        </a>
+        <a
+          href="tel:+14432197137"
+          class="inline-flex items-center gap-2 border border-ink/20 hover:border-ink/40 text-ink px-8 py-4 text-sm font-medium tracking-wide transition-colors"
+        >
+          (443) 219-7137
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
