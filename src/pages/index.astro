@@ -10,8 +10,8 @@ import Layout from "../layouts/Layout.astro";
 
     <div class="relative mx-auto max-w-7xl px-6 py-32 md:py-0">
       <div class="max-w-4xl">
-        <p class="text-copper text-sm font-medium tracking-widest uppercase mb-8 fade-up">
-          Software studio &middot; Baltimore, MD
+        <p class="text-copper text-sm font-medium tracking-wide mb-8 fade-up">
+          Baltimore, MD
         </p>
         <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display tracking-tight mb-8 fade-up fade-up-delay-1">
           Enterprise-grade software for everyday businesses.
@@ -49,11 +49,11 @@ import Layout from "../layouts/Layout.astro";
   <!-- ===== WORK SECTION ===== -->
   <section id="work" class="px-6 py-section-sm md:py-section">
     <div class="mx-auto max-w-7xl">
-      <p class="text-copper text-sm font-medium tracking-widest uppercase mb-4">Work</p>
+      <p class="text-copper text-sm font-medium tracking-wide mb-4">Work</p>
       <h2 class="text-4xl md:text-5xl lg:text-6xl mb-6 max-w-3xl">
         Products that run real businesses.
       </h2>
-      <p class="text-ink-muted text-lg max-w-2xl mb-20">
+      <p class="text-ink-muted text-lg max-w-2xl mb-6">
         We don&rsquo;t build demos. Every product below is in production, handling
         real money, real logistics, and real decisions.
       </p>
@@ -66,15 +66,13 @@ import Layout from "../layouts/Layout.astro";
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         <!-- Copy -->
         <div class="lg:sticky lg:top-32">
-          <div class="inline-flex items-center gap-2 text-sm font-medium text-forest tracking-widest uppercase mb-6">
+          <div class="inline-flex items-center gap-2 text-sm font-medium text-forest mb-6">
             <span class="w-8 h-px bg-forest"></span>
-            Case Study
+            Picket
           </div>
-          <h2 class="text-4xl md:text-5xl mb-6">Picket</h2>
-          <p class="text-xl text-ink-muted mb-8 leading-relaxed">
-            The online storefront for flower farms, market gardens,
-            and backyard businesses.
-          </p>
+          <h2 class="text-4xl md:text-5xl mb-6">
+            The online storefront for flower farms.
+          </h2>
           <p class="text-ink-muted leading-relaxed mb-6">
             Picket gives a flower farm the same infrastructure a funded DTC brand
             would spend months building &mdash; multi-tenant storefronts, Stripe Connect
@@ -95,46 +93,63 @@ import Layout from "../layouts/Layout.astro";
               </li>
             ))}
           </ul>
-          <p class="text-xs text-ink-subtle tracking-wide uppercase">
-            SaaS &middot; Commerce &middot; Logistics
-          </p>
+          <div class="flex gap-8 pt-4 border-t border-stone">
+            <div>
+              <p class="text-2xl font-display">$0</p>
+              <p class="text-xs text-ink-muted">to start selling</p>
+            </div>
+            <div>
+              <p class="text-2xl font-display">2%</p>
+              <p class="text-xs text-ink-muted">service fee, no monthly</p>
+            </div>
+          </div>
         </div>
 
-        <!-- Visual -->
-        <div class="space-y-6">
-          <div class="bg-forest rounded-2xl p-8 md:p-12 text-cream">
-            <p class="font-display text-3xl md:text-4xl mb-4 italic">
-              &ldquo;Take orders. Deliver locally. Keep your Sundays.&rdquo;
-            </p>
-            <p class="text-cream/60 text-sm">
-              Picket headline &mdash; capturing the promise in seven words
-            </p>
-          </div>
-          <div class="grid grid-cols-2 gap-6">
-            <div class="bg-cream-dark rounded-xl p-6">
-              <p class="text-3xl font-display mb-1">$0</p>
-              <p class="text-sm text-ink-muted">to start selling</p>
+        <!-- Visual — real product screenshots -->
+        <div class="space-y-4">
+          <!-- Storefront hero -->
+          <div class="rounded-xl overflow-hidden border border-stone/60 shadow-lg">
+            <div class="bg-cream-dark px-3 py-2 flex items-center gap-1.5 border-b border-stone/40">
+              <span class="w-2.5 h-2.5 rounded-full bg-stone"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-stone"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-stone"></span>
+              <span class="ml-3 text-[10px] text-ink-subtle font-mono">brookfieldblooms.mypicket.app</span>
             </div>
-            <div class="bg-cream-dark rounded-xl p-6">
-              <p class="text-3xl font-display mb-1">2%</p>
-              <p class="text-sm text-ink-muted">service fee, no monthly</p>
-            </div>
+            <img
+              src="/images/picket/storefront.png"
+              alt="Picket storefront — a flower farm's online shop with hero image and product navigation"
+              class="w-full"
+              loading="lazy"
+            />
           </div>
-          <div class="bg-cream-dark rounded-xl p-8">
-            <p class="text-sm font-medium tracking-wide uppercase text-ink-subtle mb-4">How it works</p>
-            <ol class="space-y-4">
-              {[
-                { step: "01", text: "Customer places an order on your storefront" },
-                { step: "02", text: "Order lands on your dashboard with delivery details" },
-                { step: "03", text: "Delivery zones sort the route automatically" },
-                { step: "04", text: "Deliver, mark done. Home before lunch." },
-              ].map(({ step, text }) => (
-                <li class="flex gap-4 items-baseline">
-                  <span class="text-copper font-mono text-xs">{step}</span>
-                  <span class="text-sm text-ink-muted">{text}</span>
-                </li>
-              ))}
-            </ol>
+          <!-- Operator dashboard: orders + delivery zones side-by-side on desktop, stacked on mobile -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="rounded-xl overflow-hidden border border-stone/60 shadow-md">
+              <div class="bg-cream-dark px-3 py-1.5 flex items-center gap-1.5 border-b border-stone/40">
+                <span class="w-2 h-2 rounded-full bg-stone"></span>
+                <span class="w-2 h-2 rounded-full bg-stone"></span>
+                <span class="w-2 h-2 rounded-full bg-stone"></span>
+              </div>
+              <img
+                src="/images/picket/orders.png"
+                alt="Picket order management dashboard"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+            <div class="rounded-xl overflow-hidden border border-stone/60 shadow-md">
+              <div class="bg-cream-dark px-3 py-1.5 flex items-center gap-1.5 border-b border-stone/40">
+                <span class="w-2 h-2 rounded-full bg-stone"></span>
+                <span class="w-2 h-2 rounded-full bg-stone"></span>
+                <span class="w-2 h-2 rounded-full bg-stone"></span>
+              </div>
+              <img
+                src="/images/picket/delivery-zones.png"
+                alt="Picket delivery zone configuration"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -145,57 +160,15 @@ import Layout from "../layouts/Layout.astro";
   <section id="ridgeline" class="bg-ink text-cream px-6 py-section-sm md:py-section">
     <div class="mx-auto max-w-7xl">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        <!-- Visual (left on desktop) -->
-        <div class="space-y-6 order-2 lg:order-1">
-          <div class="bg-charcoal rounded-2xl p-8 md:p-12">
-            <p class="font-display text-3xl md:text-4xl mb-4 italic text-copper">
-              &ldquo;DD sprint becomes the ops platform post-close.&rdquo;
-            </p>
-            <p class="text-cream/40 text-sm">
-              One system from diligence through operations
-            </p>
-          </div>
-          <div class="grid grid-cols-2 gap-6">
-            <div class="bg-charcoal rounded-xl p-6">
-              <p class="text-3xl font-display text-cream mb-1">PE</p>
-              <p class="text-sm text-cream/50">grade infrastructure</p>
-            </div>
-            <div class="bg-charcoal rounded-xl p-6">
-              <p class="text-3xl font-display text-cream mb-1">API</p>
-              <p class="text-sm text-cream/50">first architecture</p>
-            </div>
-          </div>
-          <div class="bg-charcoal rounded-xl p-8">
-            <p class="text-sm font-medium tracking-wide uppercase text-cream/40 mb-4">Capabilities</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {[
-                "Component-level risk scoring",
-                "Configurable weight models",
-                "Explainable output reports",
-                "REST API integration",
-                "Multi-site portfolio views",
-                "Historical trend analysis",
-              ].map((item) => (
-                <div class="flex items-start gap-3 text-sm text-cream/60">
-                  <span class="mt-1 w-1.5 h-1.5 rounded-full bg-copper shrink-0"></span>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <!-- Copy (right on desktop) -->
-        <div class="lg:sticky lg:top-32 order-1 lg:order-2">
-          <div class="inline-flex items-center gap-2 text-sm font-medium text-copper tracking-widest uppercase mb-6">
+        <!-- Copy — always first on mobile, right column on desktop -->
+        <div class="lg:sticky lg:top-32 lg:order-2">
+          <div class="inline-flex items-center gap-2 text-sm font-medium text-copper mb-6">
             <span class="w-8 h-px bg-copper"></span>
-            Case Study
+            Ridgeline
           </div>
-          <h2 class="text-4xl md:text-5xl mb-6">Ridgeline</h2>
-          <p class="text-xl text-cream/60 mb-8 leading-relaxed">
-            PE-grade wind asset due diligence as a focused SaaS
-            a two-person deal team can use before their LOI expires.
-          </p>
+          <h2 class="text-4xl md:text-5xl mb-6">
+            PE-grade wind asset due diligence.
+          </h2>
           <p class="text-cream/50 leading-relaxed mb-6">
             Ridgeline delivers the due diligence infrastructure that large energy
             firms build in-house &mdash; component-level risk scoring, configurable
@@ -203,9 +176,69 @@ import Layout from "../layouts/Layout.astro";
             smaller teams on tighter timelines. Your DD sprint becomes the ops
             platform you use post-close.
           </p>
-          <p class="text-xs text-cream/30 tracking-wide uppercase">
-            SaaS &middot; Energy &middot; Due Diligence
-          </p>
+          <ul class="space-y-3 mb-8">
+            {[
+              "Component-level risk scoring",
+              "Configurable weight models",
+              "Explainable output reports",
+              "REST API integration",
+              "Multi-site portfolio views",
+              "Historical trend analysis",
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-sm text-cream/60">
+                <span class="mt-1 w-1.5 h-1.5 rounded-full bg-copper shrink-0"></span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Visual — real product screenshots, left on desktop -->
+        <div class="space-y-4 lg:order-1">
+          <!-- Risk heatmap — the showpiece view -->
+          <div class="rounded-xl overflow-hidden border border-cream/10 shadow-lg">
+            <div class="bg-charcoal px-3 py-2 flex items-center gap-1.5 border-b border-cream/10">
+              <span class="w-2.5 h-2.5 rounded-full bg-cream/15"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-cream/15"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-cream/15"></span>
+              <span class="ml-3 text-[10px] text-cream/30 font-mono">app.ridgelineasset.com/risk-register</span>
+            </div>
+            <img
+              src="/images/ridgeline/risk-heatmap.png"
+              alt="Ridgeline portfolio risk heat map with color-coded severity across wind farm sites"
+              class="w-full"
+              loading="lazy"
+            />
+          </div>
+          <!-- Campaign list + site detail -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="rounded-xl overflow-hidden border border-cream/10 shadow-md">
+              <div class="bg-charcoal px-3 py-1.5 flex items-center gap-1.5 border-b border-cream/10">
+                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
+                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
+                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
+              </div>
+              <img
+                src="/images/ridgeline/campaigns.png"
+                alt="Ridgeline due diligence campaigns list with status and risk scores"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+            <div class="rounded-xl overflow-hidden border border-cream/10 shadow-md">
+              <div class="bg-charcoal px-3 py-1.5 flex items-center gap-1.5 border-b border-cream/10">
+                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
+                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
+                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
+              </div>
+              <img
+                src="/images/ridgeline/site-detail.png"
+                alt="Ridgeline site detail view showing turbine inventory and site metadata"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -214,36 +247,38 @@ import Layout from "../layouts/Layout.astro";
   <!-- ===== WHAT WE BUILD ===== -->
   <section id="services" class="px-6 py-section-sm md:py-section">
     <div class="mx-auto max-w-7xl">
-      <p class="text-copper text-sm font-medium tracking-widest uppercase mb-4">What we build</p>
-      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-16 max-w-3xl">
+      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-12 max-w-3xl">
         Products, not prototypes.
       </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-stone">
-        {[
-          {
-            title: "SaaS Platforms",
-            desc: "Multi-tenant systems with billing, auth, and the ops layer most MVPs skip. Built to scale from day one.",
-          },
-          {
-            title: "Commerce Infrastructure",
-            desc: "Storefronts, payment processing, subscription management, and fulfillment logistics for businesses selling online.",
-          },
-          {
-            title: "Operational Tools",
-            desc: "Dashboards, workflow engines, and data pipelines that replace the spreadsheet your team has outgrown.",
-          },
-          {
-            title: "Data & Analytics",
-            desc: "Scoring models, risk frameworks, and reporting systems that turn raw data into decisions.",
-          },
-        ].map(({ title, desc }, i) => (
-          <div class="bg-cream p-8 md:p-12">
-            <span class="text-xs font-mono text-ink-subtle">0{i + 1}</span>
-            <h3 class="text-2xl md:text-3xl mt-3 mb-4">{title}</h3>
-            <p class="text-ink-muted leading-relaxed">{desc}</p>
-          </div>
-        ))}
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Featured card — spans 2 cols on desktop -->
+        <div class="md:col-span-2 bg-forest text-cream rounded-2xl p-8 md:p-12 flex flex-col justify-end min-h-[280px]">
+          <h3 class="text-3xl md:text-4xl mb-3">SaaS Platforms</h3>
+          <p class="text-cream/70 leading-relaxed max-w-lg">
+            Multi-tenant systems with billing, auth, and the ops layer most MVPs skip. Built to scale from day one.
+          </p>
+        </div>
+        <!-- Side card -->
+        <div class="bg-cream-dark rounded-2xl p-8 flex flex-col justify-end min-h-[280px]">
+          <h3 class="text-2xl md:text-3xl mb-3">Commerce</h3>
+          <p class="text-ink-muted leading-relaxed">
+            Storefronts, payment processing, subscription management, and fulfillment logistics.
+          </p>
+        </div>
+        <!-- Bottom row — two equal cards -->
+        <div class="bg-ink text-cream rounded-2xl p-8 flex flex-col justify-end min-h-[220px]">
+          <h3 class="text-2xl md:text-3xl mb-3">Operational Tools</h3>
+          <p class="text-cream/60 leading-relaxed">
+            Dashboards, workflow engines, and data pipelines that replace the spreadsheet your team has outgrown.
+          </p>
+        </div>
+        <div class="md:col-span-2 bg-cream-dark rounded-2xl p-8 md:p-12 flex flex-col justify-end min-h-[220px]">
+          <h3 class="text-2xl md:text-3xl mb-3">Data &amp; Analytics</h3>
+          <p class="text-ink-muted leading-relaxed max-w-lg">
+            Scoring models, risk frameworks, and reporting systems that turn raw data into decisions.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -254,7 +289,7 @@ import Layout from "../layouts/Layout.astro";
       <div class="bg-cream-dark rounded-2xl p-8 md:p-16">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           <div>
-            <p class="text-copper text-sm font-medium tracking-widest uppercase mb-4">How we work</p>
+            <p class="text-copper text-sm font-medium tracking-wide mb-4">How we work</p>
             <h2 class="text-3xl md:text-4xl mb-6">
               Small team. High output. No layers.
             </h2>
