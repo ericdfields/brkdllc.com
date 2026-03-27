@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Palette — warm, grounded, confident */
+  --color-ink: #0f0f0f;
+  --color-ink-muted: #4a4a4a;
+  --color-ink-subtle: #737373;
+  --color-cream: #faf8f5;
+  --color-cream-dark: #f0ece6;
+  --color-stone: #d4cec4;
+  --color-copper: #c4703f;
+  --color-copper-dark: #a85d32;
+  --color-forest: #3d5a3e;
+  --color-forest-dark: #2d442e;
+  --color-charcoal: #1a1a1a;
+
+  /* Spacing */
+  --spacing-section: 8rem;
+  --spacing-section-sm: 5rem;
+
+  /* Animations */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background-color: var(--color-cream);
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background-color: var(--color-copper);
+  color: var(--color-cream);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.8s var(--ease-out-expo) both;
+}
+.fade-up-delay-1 { animation-delay: 0.1s; }
+.fade-up-delay-2 { animation-delay: 0.2s; }
+.fade-up-delay-3 { animation-delay: 0.3s; }
+.fade-up-delay-4 { animation-delay: 0.4s; }
