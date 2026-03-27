@@ -193,9 +193,18 @@ import Layout from "../layouts/Layout.astro";
           </ul>
         </div>
 
-        <!-- Visual — real product screenshots, left on desktop -->
+        <!-- Visual — hero photo + product screenshots, left on desktop -->
         <div class="space-y-4 lg:order-1">
-          <!-- Risk heatmap — the showpiece view -->
+          <!-- Wind farm hero — sets the mood -->
+          <div class="rounded-xl overflow-hidden">
+            <img
+              src="/images/ridgeline/hero-wind-farm.jpg"
+              alt="Aerial view of a wind farm at sunset with turbine shadows stretching across farmland"
+              class="w-full aspect-[16/9] object-cover"
+              loading="lazy"
+            />
+          </div>
+          <!-- Risk heatmap — the showpiece app view -->
           <div class="rounded-xl overflow-hidden border border-cream/10 shadow-lg">
             <div class="bg-charcoal px-3 py-2 flex items-center gap-1.5 border-b border-cream/10">
               <span class="w-2.5 h-2.5 rounded-full bg-cream/15"></span>
@@ -210,7 +219,7 @@ import Layout from "../layouts/Layout.astro";
               loading="lazy"
             />
           </div>
-          <!-- Campaign list + site detail -->
+          <!-- Campaign list + site detail side-by-side -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="rounded-xl overflow-hidden border border-cream/10 shadow-md">
               <div class="bg-charcoal px-3 py-1.5 flex items-center gap-1.5 border-b border-cream/10">
@@ -220,7 +229,7 @@ import Layout from "../layouts/Layout.astro";
               </div>
               <img
                 src="/images/ridgeline/campaigns.png"
-                alt="Ridgeline due diligence campaigns list with status and risk scores"
+                alt="Ridgeline due diligence campaigns list with status tracking"
                 class="w-full"
                 loading="lazy"
               />
