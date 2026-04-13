@@ -1,354 +1,186 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import ProjectFeature from '../components/ProjectFeature.astro';
 ---
 
-<Layout>
-  <!-- ===== HERO ===== -->
-  <section class="relative min-h-screen flex items-center bg-ink text-cream overflow-hidden">
-    <!-- Subtle grain texture overlay -->
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-repeat: repeat; background-size: 256px 256px;"></div>
+<Base title="Brookfield Digital">
 
-    <div class="relative mx-auto max-w-7xl px-6 py-32 md:py-0">
-      <div class="max-w-4xl">
-        <p class="text-copper text-sm font-medium tracking-wide mb-8 fade-up">
-          Baltimore, MD
-        </p>
-        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display tracking-tight mb-8 fade-up fade-up-delay-1">
-          Enterprise-grade software for everyday businesses.
-        </h1>
-        <p class="text-lg md:text-xl text-cream/60 max-w-2xl leading-relaxed mb-12 fade-up fade-up-delay-2">
-          We build the infrastructure that funded startups spend months on &mdash;
-          for businesses that can&rsquo;t wait. Full-stack platforms, not prototypes.
-        </p>
-        <div class="flex flex-wrap gap-4 fade-up fade-up-delay-3">
-          <a
-            href="#work"
-            class="inline-flex items-center gap-2 bg-copper hover:bg-copper-dark text-cream px-6 py-3 text-sm font-medium tracking-wide transition-colors"
-          >
-            See our work
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </a>
-          <a
-            href="#contact"
-            class="inline-flex items-center gap-2 border border-cream/20 hover:border-cream/40 text-cream px-6 py-3 text-sm font-medium tracking-wide transition-colors"
-          >
-            Get in touch
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-cream/30">
-      <div class="w-px h-12 bg-gradient-to-b from-transparent to-cream/30"></div>
-    </div>
-  </section>
-
-  <!-- ===== WORK SECTION ===== -->
-  <section id="work" class="px-6 py-section-sm md:py-section">
-    <div class="mx-auto max-w-7xl">
-      <p class="text-copper text-sm font-medium tracking-wide mb-4">Work</p>
-      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-6 max-w-3xl">
-        Products that run real businesses.
-      </h2>
-      <p class="text-ink-muted text-lg max-w-2xl mb-6">
-        We don&rsquo;t build demos. Every product below is in production, handling
-        real money, real logistics, and real decisions.
+  <!-- 0. Studio Hero -->
+  <Section id="studio" theme="studio">
+    <div class="studio-hero">
+      <p class="studio-eyebrow">Brookfield Digital</p>
+      <h1 class="studio-headline">
+        We build software for people doing real work.
+      </h1>
+      <p class="studio-sub">
+        A small studio out of Baltimore, MD. Three products live in the wild —
+        scroll to meet them.
       </p>
+      <nav class="studio-chips" aria-label="Products">
+        <a href="#picket" class="chip">Picket</a>
+        <a href="#ridgeline" class="chip">Ridgeline</a>
+        <a href="#argus" class="chip">Argus</a>
+      </nav>
     </div>
-  </section>
+  </Section>
 
-  <!-- ===== PICKET CASE STUDY ===== -->
-  <section id="picket" class="px-6 pb-section-sm md:pb-section">
-    <div class="mx-auto max-w-7xl">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        <!-- Copy -->
-        <div class="lg:sticky lg:top-32">
-          <div class="inline-flex items-center gap-2 text-sm font-medium text-forest mb-6">
-            <span class="w-8 h-px bg-forest"></span>
-            Picket
-          </div>
-          <h2 class="text-4xl md:text-5xl mb-6">
-            The online storefront for flower farms.
-          </h2>
-          <p class="text-ink-muted leading-relaxed mb-6">
-            Picket gives a flower farm the same infrastructure a funded DTC brand
-            would spend months building &mdash; multi-tenant storefronts, Stripe Connect
-            payment processing, delivery route optimization, and subscription management.
-            Zero cost to start.
-          </p>
-          <ul class="space-y-3 mb-8">
-            {[
-              "Multi-tenant storefronts with custom domains",
-              "Stripe Connect for marketplace payments",
-              "Delivery route optimization & zone management",
-              "Subscription & seasonal inventory management",
-              "Mobile-ready order management dashboard",
-            ].map((item) => (
-              <li class="flex items-start gap-3 text-sm text-ink-muted">
-                <span class="mt-1 w-1.5 h-1.5 rounded-full bg-copper shrink-0"></span>
-                {item}
-              </li>
-            ))}
-          </ul>
-          <div class="flex gap-8 pt-4 border-t border-stone">
-            <div>
-              <p class="text-2xl font-display">$0</p>
-              <p class="text-xs text-ink-muted">to start selling</p>
-            </div>
-            <div>
-              <p class="text-2xl font-display">2%</p>
-              <p class="text-xs text-ink-muted">service fee, no monthly</p>
-            </div>
-          </div>
-        </div>
+  <!-- 1. Picket -->
+  <Section id="picket" theme="picket">
+    <ProjectFeature
+      name="Picket"
+      tagline="The online storefront built for growers, not retailers."
+      description="Subscriptions, delivery routes, and seasonal inventory — for flower farms, CSAs, market gardens, and home bakers. Starting at $0/mo."
+      url="https://sellwithpicket.com"
+      logo="/images/picket/logo.svg"
+      logoAlt="Picket"
+      screenshots={['/images/picket/storefront.png', '/images/picket/orders.png']}
+      screenshotAlts={['Picket storefront dashboard', 'Picket order management']}
+    />
+  </Section>
 
-        <!-- Visual — real product screenshots -->
-        <div class="space-y-4">
-          <!-- Storefront hero -->
-          <div class="rounded-xl overflow-hidden border border-stone/60 shadow-lg">
-            <div class="bg-cream-dark px-3 py-2 flex items-center gap-1.5 border-b border-stone/40">
-              <span class="w-2.5 h-2.5 rounded-full bg-stone"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-stone"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-stone"></span>
-              <span class="ml-3 text-[10px] text-ink-subtle font-mono">brookfieldblooms.mypicket.app</span>
-            </div>
-            <img
-              src="/images/picket/storefront.png"
-              alt="Picket storefront — a flower farm's online shop with hero image and product navigation"
-              class="w-full"
-              loading="lazy"
-            />
-          </div>
-          <!-- Operator dashboard: orders + delivery zones side-by-side on desktop, stacked on mobile -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="rounded-xl overflow-hidden border border-stone/60 shadow-md">
-              <div class="bg-cream-dark px-3 py-1.5 flex items-center gap-1.5 border-b border-stone/40">
-                <span class="w-2 h-2 rounded-full bg-stone"></span>
-                <span class="w-2 h-2 rounded-full bg-stone"></span>
-                <span class="w-2 h-2 rounded-full bg-stone"></span>
-              </div>
-              <img
-                src="/images/picket/orders.png"
-                alt="Picket order management dashboard"
-                class="w-full"
-                loading="lazy"
-              />
-            </div>
-            <div class="rounded-xl overflow-hidden border border-stone/60 shadow-md">
-              <div class="bg-cream-dark px-3 py-1.5 flex items-center gap-1.5 border-b border-stone/40">
-                <span class="w-2 h-2 rounded-full bg-stone"></span>
-                <span class="w-2 h-2 rounded-full bg-stone"></span>
-                <span class="w-2 h-2 rounded-full bg-stone"></span>
-              </div>
-              <img
-                src="/images/picket/delivery-zones.png"
-                alt="Picket delivery zone configuration"
-                class="w-full"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- 2. Ridgeline -->
+  <Section id="ridgeline" theme="ridgeline">
+    <ProjectFeature
+      name="Ridgeline"
+      tagline="Technical due diligence for wind acquisitions."
+      description="You're under LOI. The exclusivity window is ticking. Ridgeline runs structured technical assessment across every turbine in the deal — so you close with confidence."
+      url="https://ridgelineasset.com"
+      logo="/images/ridgeline/logo.svg"
+      logoAlt="Ridgeline"
+      screenshots={['/images/ridgeline/risk-heatmap.png', '/images/ridgeline/site-detail.png']}
+      screenshotAlts={['Ridgeline risk scoring dashboard', 'Ridgeline site detail view']}
+    />
+  </Section>
 
-  <!-- ===== RIDGELINE CASE STUDY ===== -->
-  <section id="ridgeline" class="bg-ink text-cream px-6 py-section-sm md:py-section">
-    <div class="mx-auto max-w-7xl">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        <!-- Copy — always first on mobile, right column on desktop -->
-        <div class="lg:sticky lg:top-32 lg:order-2">
-          <div class="inline-flex items-center gap-2 text-sm font-medium text-copper mb-6">
-            <span class="w-8 h-px bg-copper"></span>
-            Ridgeline
-          </div>
-          <h2 class="text-4xl md:text-5xl mb-6">
-            PE-grade wind asset due diligence.
-          </h2>
-          <p class="text-cream/50 leading-relaxed mb-6">
-            Ridgeline delivers the due diligence infrastructure that large energy
-            firms build in-house &mdash; component-level risk scoring, configurable
-            weight models, explainable output &mdash; as a platform that works for
-            smaller teams on tighter timelines. Your DD sprint becomes the ops
-            platform you use post-close.
-          </p>
-          <ul class="space-y-3 mb-8">
-            {[
-              "Component-level risk scoring",
-              "Configurable weight models",
-              "Explainable output reports",
-              "REST API integration",
-              "Multi-site portfolio views",
-              "Historical trend analysis",
-            ].map((item) => (
-              <li class="flex items-start gap-3 text-sm text-cream/60">
-                <span class="mt-1 w-1.5 h-1.5 rounded-full bg-copper shrink-0"></span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
+  <!-- 3. Argus -->
+  <Section id="argus" theme="argus">
+    <ProjectFeature
+      name="Argus"
+      tagline="Every image you upload, understood."
+      description="AI-powered media catalog. Upload via dashboard, CLI, API, or MCP. Extracts descriptions, tags, mood, and palette. Built for teams and agents."
+      url="https://argus.build"
+      logo="/images/argus/logo.svg"
+      logoAlt="Argus"
+      screenshots={['/images/argus/catalog.png', '/images/argus/detail.png']}
+      screenshotAlts={['Argus media catalog', 'Argus image analysis detail']}
+    />
+  </Section>
 
-        <!-- Visual — hero photo + product screenshots, left on desktop -->
-        <div class="space-y-4 lg:order-1">
-          <!-- Wind farm hero — sets the mood -->
-          <div class="rounded-xl overflow-hidden">
-            <img
-              src="/images/ridgeline/hero-wind-farm.jpg"
-              alt="Aerial view of a wind farm at sunset with turbine shadows stretching across farmland"
-              class="w-full aspect-[16/9] object-cover"
-              loading="lazy"
-            />
-          </div>
-          <!-- Risk heatmap — the showpiece app view -->
-          <div class="rounded-xl overflow-hidden border border-cream/10 shadow-lg">
-            <div class="bg-charcoal px-3 py-2 flex items-center gap-1.5 border-b border-cream/10">
-              <span class="w-2.5 h-2.5 rounded-full bg-cream/15"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-cream/15"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-cream/15"></span>
-              <span class="ml-3 text-[10px] text-cream/30 font-mono">app.ridgelineasset.com/risk-register</span>
-            </div>
-            <img
-              src="/images/ridgeline/risk-heatmap.png"
-              alt="Ridgeline portfolio risk heat map with color-coded severity across wind farm sites"
-              class="w-full"
-              loading="lazy"
-            />
-          </div>
-          <!-- Campaign list + site detail side-by-side -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="rounded-xl overflow-hidden border border-cream/10 shadow-md">
-              <div class="bg-charcoal px-3 py-1.5 flex items-center gap-1.5 border-b border-cream/10">
-                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
-                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
-                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
-              </div>
-              <img
-                src="/images/ridgeline/campaigns.png"
-                alt="Ridgeline due diligence campaigns list with status tracking"
-                class="w-full"
-                loading="lazy"
-              />
-            </div>
-            <div class="rounded-xl overflow-hidden border border-cream/10 shadow-md">
-              <div class="bg-charcoal px-3 py-1.5 flex items-center gap-1.5 border-b border-cream/10">
-                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
-                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
-                <span class="w-2 h-2 rounded-full bg-cream/15"></span>
-              </div>
-              <img
-                src="/images/ridgeline/site-detail.png"
-                alt="Ridgeline site detail view showing turbine inventory and site metadata"
-                class="w-full"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== WHAT WE BUILD ===== -->
-  <section id="services" class="px-6 py-section-sm md:py-section">
-    <div class="mx-auto max-w-7xl">
-      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-12 max-w-3xl">
-        Products, not prototypes.
-      </h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Featured card — spans 2 cols on desktop -->
-        <div class="md:col-span-2 bg-forest text-cream rounded-2xl p-8 md:p-12 flex flex-col justify-end min-h-[280px]">
-          <h3 class="text-3xl md:text-4xl mb-3">SaaS Platforms</h3>
-          <p class="text-cream/70 leading-relaxed max-w-lg">
-            Multi-tenant systems with billing, auth, and the ops layer most MVPs skip. Built to scale from day one.
-          </p>
-        </div>
-        <!-- Side card -->
-        <div class="bg-cream-dark rounded-2xl p-8 flex flex-col justify-end min-h-[280px]">
-          <h3 class="text-2xl md:text-3xl mb-3">Commerce</h3>
-          <p class="text-ink-muted leading-relaxed">
-            Storefronts, payment processing, subscription management, and fulfillment logistics.
-          </p>
-        </div>
-        <!-- Bottom row — two equal cards -->
-        <div class="bg-ink text-cream rounded-2xl p-8 flex flex-col justify-end min-h-[220px]">
-          <h3 class="text-2xl md:text-3xl mb-3">Operational Tools</h3>
-          <p class="text-cream/60 leading-relaxed">
-            Dashboards, workflow engines, and data pipelines that replace the spreadsheet your team has outgrown.
-          </p>
-        </div>
-        <div class="md:col-span-2 bg-cream-dark rounded-2xl p-8 md:p-12 flex flex-col justify-end min-h-[220px]">
-          <h3 class="text-2xl md:text-3xl mb-3">Data &amp; Analytics</h3>
-          <p class="text-ink-muted leading-relaxed max-w-lg">
-            Scoring models, risk frameworks, and reporting systems that turn raw data into decisions.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== APPROACH ===== -->
-  <section class="px-6 pb-section-sm md:pb-section">
-    <div class="mx-auto max-w-7xl">
-      <div class="bg-cream-dark rounded-2xl p-8 md:p-16">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          <div>
-            <p class="text-copper text-sm font-medium tracking-wide mb-4">How we work</p>
-            <h2 class="text-3xl md:text-4xl mb-6">
-              Small team. High output. No layers.
-            </h2>
-          </div>
-          <div class="space-y-6 text-ink-muted leading-relaxed">
-            <p>
-              We&rsquo;re a software studio, not an agency with account managers and
-              status meetings. You talk to the people writing the code. Decisions
-              happen in hours, not weeks.
-            </p>
-            <p>
-              Every engagement starts with a focused build sprint. We ship working
-              software early and iterate from real usage &mdash; not slide decks.
-              The first version is production-ready, not a proof of concept.
-            </p>
-            <p>
-              We specialize in the kind of software that mid-market businesses
-              need but enterprise vendors price out of reach &mdash; and that
-              freelancers can&rsquo;t build to last.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" class="px-6 pb-section-sm md:pb-section">
-    <div class="mx-auto max-w-7xl text-center">
-      <h2 class="text-4xl md:text-5xl lg:text-6xl mb-6">
-        Let&rsquo;s build something.
-      </h2>
-      <p class="text-ink-muted text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-        Tell us what you&rsquo;re working on. We&rsquo;ll tell you how we&rsquo;d build it
-        &mdash; and whether we&rsquo;re the right team.
+  <!-- 4. Footer / Contact -->
+  <Section id="contact" theme="footer">
+    <footer class="site-footer">
+      <p class="footer-brand">Brookfield Digital</p>
+      <p class="footer-tagline">
+        Building tools for the people big platforms overlook.
       </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a
-          href="mailto:eric@brkdllc.com"
-          class="inline-flex items-center gap-2 bg-ink hover:bg-charcoal text-cream px-8 py-4 text-sm font-medium tracking-wide transition-colors"
-        >
-          eric@brkdllc.com
-        </a>
-        <a
-          href="tel:+14432197137"
-          class="inline-flex items-center gap-2 border border-ink/20 hover:border-ink/40 text-ink px-8 py-4 text-sm font-medium tracking-wide transition-colors"
-        >
-          (443) 219-7137
-        </a>
-      </div>
-    </div>
-  </section>
-</Layout>
+      <nav class="footer-links" aria-label="Product links">
+        <a href="https://sellwithpicket.com" target="_blank" rel="noopener">Picket</a>
+        <a href="https://ridgelineasset.com" target="_blank" rel="noopener">Ridgeline</a>
+        <a href="https://argus.build" target="_blank" rel="noopener">Argus</a>
+      </nav>
+      <p class="footer-copy">
+        &copy; {new Date().getFullYear()} Brookfield Digital, LLC &middot; Baltimore, MD
+      </p>
+    </footer>
+  </Section>
+
+</Base>
+
+<style>
+  .studio-hero {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .studio-eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .studio-headline {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+  }
+
+  .studio-sub {
+    font-size: 1.125rem;
+    color: var(--color-muted);
+    max-width: 50ch;
+    margin-bottom: 3rem;
+  }
+
+  .studio-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .chip {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .chip:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .site-footer {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .footer-brand {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+  }
+
+  .footer-tagline {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 2.5rem;
+    max-width: 40ch;
+    margin-inline: auto;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-links a {
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-accent);
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+</style>

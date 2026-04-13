@@ -1,0 +1,38 @@
+---
+interface Props {
+  id: string;
+  theme: 'studio' | 'picket' | 'ridgeline' | 'argus' | 'footer';
+  class?: string;
+}
+
+const { id, theme, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  data-theme-target={theme}
+  class:list={['snap-section', className]}
+>
+  <slot />
+</section>
+
+<style>
+  .snap-section {
+    scroll-snap-align: start;
+    min-height: 100svh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 2rem;
+    position: relative;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  @media (min-width: 768px) {
+    .snap-section {
+      padding: 5rem 4rem;
+    }
+  }
+</style>

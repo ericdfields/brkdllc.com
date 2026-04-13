@@ -1,0 +1,89 @@
+---
+const sections = [
+  { id: 'studio', label: 'Intro' },
+  { id: 'picket', label: 'Picket' },
+  { id: 'ridgeline', label: 'Ridgeline' },
+  { id: 'argus', label: 'Argus' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+
+<nav class="dot-nav" aria-label="Page sections">
+  {sections.map((s) => (
+    <a
+      href={`#${s.id}`}
+      class="dot-nav__item"
+      data-dot-target={s.id}
+      aria-label={s.label}
+      title={s.label}
+    >
+      <span class="dot" />
+    </a>
+  ))}
+</nav>
+
+<style>
+  .dot-nav {
+    position: fixed;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 100;
+  }
+
+  @media (max-width: 480px) {
+    .dot-nav { display: none; }
+  }
+
+  .dot-nav__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-muted);
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .dot-nav__item.active .dot {
+    background: var(--color-accent);
+    transform: scale(1.4);
+  }
+</style>
+
+<script>
+  (() => {
+    const dots = document.querySelectorAll('[data-dot-target]');
+    const sections = document.querySelectorAll('[data-theme-target]');
+
+    if (!dots.length || !sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            dots.forEach((dot) => {
+              dot.classList.toggle('active', dot.dataset.dotTarget === id);
+            });
+          }
+        }
+      },
+      {
+        rootMargin: '-40% 0px -40% 0px',
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+  })();
+</script>
