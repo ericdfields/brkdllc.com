@@ -42,6 +42,15 @@
   --color-surface: #EEECE8;
 }
 
+[data-theme="work"],
+[data-theme-target="work"] {
+  --color-bg: #111111;
+  --color-text: #F0EDE6;
+  --color-accent: #FFFFFF;
+  --color-muted: #777777;
+  --color-surface: #1A1A1A;
+}
+
 [data-theme="footer"],
 [data-theme-target="footer"] {
   --color-bg: #0F0F0F;

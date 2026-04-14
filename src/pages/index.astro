@@ -67,7 +67,60 @@ import ProjectFeature from '../components/ProjectFeature.astro';
     />
   </Section>
 
-  <!-- 4. Footer / Contact -->
+  <!-- 4. How We Work + Contact -->
+  <Section id="work" theme="work">
+    <div class="work-grid">
+      <div class="work-process">
+        <h2 class="work-heading">How we work</h2>
+        <ol class="work-steps">
+          <li class="work-step">
+            <span class="work-step-num">01</span>
+            <div>
+              <h3 class="work-step-title">Discovery</h3>
+              <p class="work-step-desc">We learn your business, map workflows, and identify the highest-leverage opportunity for software.</p>
+            </div>
+          </li>
+          <li class="work-step">
+            <span class="work-step-num">02</span>
+            <div>
+              <h3 class="work-step-title">Build</h3>
+              <p class="work-step-desc">Small team, fast cycles. You see working software every week — not decks and wireframes.</p>
+            </div>
+          </li>
+          <li class="work-step">
+            <span class="work-step-num">03</span>
+            <div>
+              <h3 class="work-step-title">Ship &amp; Support</h3>
+              <p class="work-step-desc">We launch, monitor, and iterate. Your product gets better after launch, not before.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="work-contact">
+        <h2 class="work-heading">Get in touch</h2>
+        <p class="work-contact-email">
+          <a href="mailto:eric@brookfielddigital.dev">eric@brookfielddigital.dev</a>
+        </p>
+        <form class="work-form" data-static="true">
+          <label class="work-label">
+            <span>Name</span>
+            <input type="text" name="name" required autocomplete="name" />
+          </label>
+          <label class="work-label">
+            <span>Email</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="work-label">
+            <span>Message</span>
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <button type="submit" class="work-submit">Send message</button>
+        </form>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 5. Footer -->
   <Section id="contact" theme="footer">
     <footer class="site-footer">
       <p class="footer-brand">Brookfield Digital</p>
@@ -182,5 +235,135 @@ import ProjectFeature from '../components/ProjectFeature.astro';
   .footer-copy {
     font-size: 0.8rem;
     color: var(--color-muted);
+  }
+
+  /* How We Work + Contact */
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .work-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+  }
+
+  .work-heading {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+  }
+
+  .work-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .work-step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .work-step-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+    padding-top: 0.15rem;
+    flex-shrink: 0;
+  }
+
+  .work-step-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.35rem;
+  }
+
+  .work-step-desc {
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    max-width: 40ch;
+    line-height: 1.5;
+  }
+
+  .work-contact-email {
+    margin-bottom: 2rem;
+  }
+
+  .work-contact-email a {
+    color: var(--color-accent);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .work-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .work-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .work-label span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .work-label input,
+  .work-label textarea {
+    background: var(--color-surface);
+    border: 1px solid var(--color-muted);
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+  }
+
+  .work-label input:focus,
+  .work-label textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .work-label textarea {
+    resize: vertical;
+  }
+
+  .work-submit {
+    align-self: flex-start;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .work-submit:hover {
+    opacity: 0.85;
   }
 </style>
