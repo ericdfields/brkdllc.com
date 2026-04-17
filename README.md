@@ -1,43 +1,75 @@
-# Astro Starter Kit: Minimal
+# brkdllc.com
+
+Marketing site for Brookfield Digital. Astro 6 static site hosted on Cloudflare Pages. The contact form is backed by a Cloudflare Pages Function that relays messages through [Resend](https://resend.com).
+
+## Commands
+
+| Command           | Action                                    |
+| :---------------- | :---------------------------------------- |
+| `npm install`     | Install dependencies                      |
+| `npm run dev`     | Astro dev server at `http://localhost:4321` (no Functions) |
+| `npm run build`   | Build to `./dist/`                        |
+| `npm run preview` | Preview the built site with Astro         |
+
+## Structure
+
+```
+./
+├── functions/api/contact.ts   Cloudflare Pages Function — contact form backend
+├── public/                    Static assets
+└── src/                       Astro pages, layouts, components
+```
+
+## Contact form backend
+
+`POST /api/contact` accepts either JSON or form-encoded payloads:
+
+```json
+{ "name": "...", "email": "...", "message": "...", "website": "" }
+```
+
+The function validates input, drops submissions where the hidden `website` honeypot is filled, rate-limits each client IP to 5 submissions per 10 minutes, and forwards the message to `eric@brkdllc.com` via Resend.
+
+### Required environment variables
+
+Configure these in the Cloudflare dashboard under **Pages → brkdllc-com → Settings → Environment variables** (set them for both Production and Preview):
+
+| Name              | Required | Notes                                                                                     |
+| :---------------- | :------- | :---------------------------------------------------------------------------------------- |
+| `RESEND_API_KEY`  | yes      | Create at https://resend.com/api-keys. Store as an **encrypted** environment variable.    |
+| `CONTACT_FROM`    | no       | Override the from address (defaults to `Brookfield Digital <onboarding@resend.dev>`).     |
+| `CONTACT_TO`      | no       | Override the destination address (defaults to `eric@brkdllc.com`).                        |
+
+### Optional KV rate limit binding
+
+By default the rate limiter uses an in-memory `Map`, which is sufficient for low traffic but resets per Worker instance. For durable rate limiting, create a KV namespace and bind it as `CONTACT_RATE_LIMIT`:
 
 ```sh
-pnpm create astro@latest -- --template minimal
+npx wrangler kv namespace create CONTACT_RATE_LIMIT
+# Then in Pages → Settings → Functions → KV namespace bindings:
+#   Variable name: CONTACT_RATE_LIMIT → bind to the namespace above.
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Resend sender setup
 
-## 🚀 Project Structure
+Resend's sandbox `onboarding@resend.dev` sender works immediately and is fine for launch. To send from `@brkdllc.com`, verify the domain at https://resend.com/domains (adds SPF, DKIM, and DMARC records to your DNS) and set `CONTACT_FROM` to e.g. `Eric Brookfield <eric@brkdllc.com>`.
 
-Inside of your Astro project, you'll see the following folders and files:
+### Local testing with Functions
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+`astro dev` does not run Pages Functions. To test `/api/contact` locally, build and run with Wrangler:
+
+```sh
+npm run build
+RESEND_API_KEY=re_... npx wrangler pages dev dist --local
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Then POST to `http://localhost:8788/api/contact`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Deployment
 
-Any static assets, like images, can be placed in the `public/` directory.
+Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the Astro site and runs `wrangler pages deploy dist/`. The `functions/` directory is picked up automatically from the project root.
 
-## 🧞 Commands
+Required GitHub secrets:
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `CLOUDFLARE_API_TOKEN` — Pages: Edit permission
+- `CLOUDFLARE_ACCOUNT_ID`

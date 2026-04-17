@@ -101,24 +101,113 @@ import ProjectFeature from '../components/ProjectFeature.astro';
         <p class="work-contact-email">
           <a href="mailto:eric@brkdllc.com">eric@brkdllc.com</a>
         </p>
-        <form class="work-form" data-static="true">
+        <form
+          class="work-form"
+          id="contact-form"
+          action="/api/contact"
+          method="POST"
+          novalidate
+        >
           <label class="work-label">
             <span>Name</span>
-            <input type="text" name="name" required autocomplete="name" />
+            <input type="text" name="name" required autocomplete="name" maxlength="200" />
           </label>
           <label class="work-label">
             <span>Email</span>
-            <input type="email" name="email" required autocomplete="email" />
+            <input type="email" name="email" required autocomplete="email" maxlength="200" />
           </label>
           <label class="work-label">
             <span>Message</span>
-            <textarea name="message" rows="4" required></textarea>
+            <textarea name="message" rows="4" required maxlength="5000"></textarea>
           </label>
+          <div class="work-honeypot" aria-hidden="true">
+            <label>
+              Website
+              <input type="text" name="website" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+          <p class="work-form-status" id="contact-form-status" role="status" aria-live="polite"></p>
           <button type="submit" class="work-submit">Send message</button>
         </form>
       </div>
     </div>
   </Section>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const status = document.getElementById('contact-form-status');
+    const submit = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    if (form && status && submit) {
+      const originalLabel = submit.textContent ?? 'Send message';
+
+      const setStatus = (message: string, tone: 'idle' | 'error' | 'success' | 'pending') => {
+        status.textContent = message;
+        status.dataset.tone = tone;
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const data = new FormData(form);
+        const name = String(data.get('name') ?? '').trim();
+        const email = String(data.get('email') ?? '').trim();
+        const message = String(data.get('message') ?? '').trim();
+
+        if (!name) {
+          setStatus('Please add your name.', 'error');
+          return;
+        }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          setStatus('Please enter a valid email address.', 'error');
+          return;
+        }
+        if (!message) {
+          setStatus('Please include a message.', 'error');
+          return;
+        }
+
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+        setStatus('Sending your message…', 'pending');
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json', accept: 'application/json' },
+            body: JSON.stringify({
+              name,
+              email,
+              message,
+              website: String(data.get('website') ?? ''),
+            }),
+          });
+
+          const payload = (await response.json().catch(() => ({}))) as {
+            ok?: boolean;
+            error?: string;
+          };
+
+          if (response.ok && payload.ok) {
+            form.reset();
+            setStatus("Thanks — I'll be in touch soon.", 'success');
+            submit.textContent = 'Sent';
+          } else {
+            setStatus(
+              payload.error || 'Something went wrong. Please email eric@brkdllc.com directly.',
+              'error',
+            );
+            submit.disabled = false;
+            submit.textContent = originalLabel;
+          }
+        } catch {
+          setStatus('Network error. Please email eric@brkdllc.com directly.', 'error');
+          submit.disabled = false;
+          submit.textContent = originalLabel;
+        }
+      });
+    }
+  </script>
 
   <!-- 5. Footer -->
   <Section id="contact" theme="footer">
@@ -365,5 +454,38 @@ import ProjectFeature from '../components/ProjectFeature.astro';
 
   .work-submit:hover {
     opacity: 0.85;
+  }
+
+  .work-submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .work-honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .work-form-status {
+    font-size: 0.9rem;
+    min-height: 1.25em;
+    margin: 0;
+    color: var(--color-muted);
+    transition: color 0.2s;
+  }
+
+  .work-form-status[data-tone="error"] {
+    color: #d14343;
+  }
+
+  .work-form-status[data-tone="success"] {
+    color: var(--color-accent);
+  }
+
+  .work-form-status[data-tone="pending"] {
+    color: var(--color-muted);
   }
 </style>
