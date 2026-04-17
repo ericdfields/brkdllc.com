@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+import DotNav from '../components/DotNav.astro';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Brookfield Digital' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="studio">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Brookfield Digital — software studio building tools for growers, wind energy, and AI." />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <DotNav />
+    <slot />
+
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const sections = document.querySelectorAll('[data-theme-target]');
+
+        if (!sections.length) return;
+
+        root.dataset.theme = sections[0].dataset.themeTarget;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                const theme = entry.target.dataset.themeTarget;
+                if (theme) root.dataset.theme = theme;
+              }
+            }
+          },
+          {
+            rootMargin: '-40% 0px -40% 0px',
+            threshold: 0,
+          }
+        );
+
+        sections.forEach((section) => observer.observe(section));
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,128 @@
+---
+interface Props {
+  name: string;
+  tagline: string;
+  description: string;
+  url: string;
+  logo: string;
+  logoAlt: string;
+  screenshots: string[];
+  screenshotAlts: string[];
+}
+
+const {
+  name, tagline, description, url, logo, logoAlt, screenshots, screenshotAlts
+} = Astro.props;
+---
+
+<div class="feature">
+  <div class="feature__text">
+    <img
+      src={logo}
+      alt={logoAlt}
+      class="feature__logo"
+      width="180"
+      height="48"
+    />
+    <p class="feature__tagline">{tagline}</p>
+    <p class="feature__desc">{description}</p>
+    <a href={url} class="feature__cta" target="_blank" rel="noopener">
+      Visit {name} →
+    </a>
+  </div>
+
+  <div class="feature__screenshots">
+    {screenshots.map((src, i) => (
+      <div class="feature__screenshot-wrap">
+        <img
+          src={src}
+          alt={screenshotAlts[i] ?? name + ' screenshot'}
+          class="feature__screenshot"
+          loading="lazy"
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .feature {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .feature {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 5rem;
+    }
+  }
+
+  .feature__logo {
+    max-height: 48px;
+    width: auto;
+    margin-bottom: 1.5rem;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .feature__tagline {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  .feature__desc {
+    font-size: 1rem;
+    color: var(--color-muted);
+    max-width: 48ch;
+    margin-bottom: 2rem;
+  }
+
+  .feature__cta {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: opacity 0.2s;
+  }
+
+  .feature__cta:hover {
+    opacity: 0.85;
+  }
+
+  .feature__screenshots {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 900px) {
+    .feature__screenshots {
+      flex-direction: column;
+    }
+  }
+
+  .feature__screenshot-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    background: var(--color-surface);
+  }
+
+  .feature__screenshot {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
