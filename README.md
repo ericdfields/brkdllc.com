@@ -1,23 +1,28 @@
 # brkdllc.com
 
-Marketing site for Brookfield Digital. Astro 6 static site hosted on Cloudflare Pages. The contact form is backed by a Cloudflare Pages Function that relays messages through [Resend](https://resend.com).
+Marketing site for Brookfield Digital. Astro 6 static site deployed as a **Cloudflare Worker with Assets** (Worker name `brookfield-digital`, custom domain `brkdllc.com`). The contact form is handled by the same Worker and relays messages through [Amazon SES](https://aws.amazon.com/ses/) (v2 `SendEmail`, SigV4-signed fetch via [`aws4fetch`](https://github.com/mhart/aws4fetch)).
 
 ## Commands
 
-| Command           | Action                                    |
-| :---------------- | :---------------------------------------- |
-| `npm install`     | Install dependencies                      |
-| `npm run dev`     | Astro dev server at `http://localhost:4321` (no Functions) |
-| `npm run build`   | Build to `./dist/`                        |
-| `npm run preview` | Preview the built site with Astro         |
+| Command           | Action                                                   |
+| :---------------- | :------------------------------------------------------- |
+| `npm install`     | Install dependencies                                     |
+| `npm run dev`     | Astro dev server at `http://localhost:4321` (no Worker)  |
+| `npm run build`   | Build static assets to `./dist/`                         |
+| `npm run preview` | Preview the built site with Astro                        |
 
 ## Structure
 
 ```
 ./
-├── functions/api/contact.ts   Cloudflare Pages Function — contact form backend
-├── public/                    Static assets
-└── src/                       Astro pages, layouts, components
+├── src/
+│   ├── worker.ts          Cloudflare Worker entry (API + asset fallthrough)
+│   ├── pages/             Astro pages
+│   ├── layouts/
+│   └── components/
+├── public/                Static assets copied into dist/
+├── wrangler.jsonc         Worker + Assets config
+└── .github/workflows/deploy.yml
 ```
 
 ## Contact form backend
@@ -28,48 +33,82 @@ Marketing site for Brookfield Digital. Astro 6 static site hosted on Cloudflare 
 { "name": "...", "email": "...", "message": "...", "website": "" }
 ```
 
-The function validates input, drops submissions where the hidden `website` honeypot is filled, rate-limits each client IP to 5 submissions per 10 minutes, and forwards the message to `eric@brkdllc.com` via Resend.
+The Worker validates input, silently drops submissions where the hidden `website` honeypot is filled, rate-limits each client IP to 5 submissions per 10 minutes, and forwards the message to `eric@brkdllc.com` via Amazon SES.
 
-### Required environment variables
+### Required secrets / vars
 
-Configure these in the Cloudflare dashboard under **Pages → brkdllc-com → Settings → Environment variables** (set them for both Production and Preview):
+Configure on the `brookfield-digital` Worker. Secrets via `wrangler secret put`, plain vars via `wrangler.jsonc` → `vars` or the dashboard.
 
-| Name              | Required | Notes                                                                                     |
-| :---------------- | :------- | :---------------------------------------------------------------------------------------- |
-| `RESEND_API_KEY`  | yes      | Create at https://resend.com/api-keys. Store as an **encrypted** environment variable.    |
-| `CONTACT_FROM`    | no       | Override the from address (defaults to `Brookfield Digital <onboarding@resend.dev>`).     |
-| `CONTACT_TO`      | no       | Override the destination address (defaults to `eric@brkdllc.com`).                        |
+| Name                        | Kind   | Required | Notes                                                                                      |
+| :-------------------------- | :----- | :------- | :----------------------------------------------------------------------------------------- |
+| `AWS_SES_ACCESS_KEY_ID`     | secret | yes      | IAM access key ID scoped to `ses:SendEmail` on the verified identity.                      |
+| `AWS_SES_SECRET_ACCESS_KEY` | secret | yes      | Matching secret key.                                                                        |
+| `AWS_SES_REGION`            | var    | no       | SES region the identity is verified in (default `us-east-1` in `wrangler.jsonc`).          |
+| `AWS_SES_SESSION_TOKEN`     | secret | no       | Only needed for temporary STS credentials.                                                 |
+| `CONTACT_FROM`              | var    | no       | Override from address (default `Brookfield Digital <eric@brkdllc.com>`). Must be a verified SES identity. |
+| `CONTACT_TO`                | var    | no       | Override destination (default `eric@brkdllc.com`).                                         |
+
+Set the secrets:
+
+```sh
+npx wrangler secret put AWS_SES_ACCESS_KEY_ID
+npx wrangler secret put AWS_SES_SECRET_ACCESS_KEY
+```
+
+### IAM policy for the access key
+
+Minimum policy — replace `IDENTITY_ARN` with the ARN of the verified SES identity (domain or email):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    { "Effect": "Allow", "Action": ["ses:SendEmail"], "Resource": "IDENTITY_ARN" }
+  ]
+}
+```
+
+### SES sender setup
+
+- Verify the sender identity in the SES console (either the `brkdllc.com` domain or the `eric@brkdllc.com` email).
+- If SES is still in sandbox, verify `eric@brkdllc.com` as a destination too, or request production access.
+- `CONTACT_FROM` must be a verified identity. `Reply-To` is automatically set to the submitter's address so replies land with them.
 
 ### Optional KV rate limit binding
 
-By default the rate limiter uses an in-memory `Map`, which is sufficient for low traffic but resets per Worker instance. For durable rate limiting, create a KV namespace and bind it as `CONTACT_RATE_LIMIT`:
+By default the rate limiter uses an in-memory `Map`, which is sufficient for low traffic but resets per Worker instance. For durable rate limiting, create a KV namespace and add a binding named `CONTACT_RATE_LIMIT`:
 
 ```sh
 npx wrangler kv namespace create CONTACT_RATE_LIMIT
-# Then in Pages → Settings → Functions → KV namespace bindings:
-#   Variable name: CONTACT_RATE_LIMIT → bind to the namespace above.
+# Add the returned id as a kv_namespaces binding in wrangler.jsonc:
+# "kv_namespaces": [{ "binding": "CONTACT_RATE_LIMIT", "id": "..." }]
 ```
 
-### Resend sender setup
+### Local testing
 
-Resend's sandbox `onboarding@resend.dev` sender works immediately and is fine for launch. To send from `@brkdllc.com`, verify the domain at https://resend.com/domains (adds SPF, DKIM, and DMARC records to your DNS) and set `CONTACT_FROM` to e.g. `Eric Brookfield <eric@brkdllc.com>`.
-
-### Local testing with Functions
-
-`astro dev` does not run Pages Functions. To test `/api/contact` locally, build and run with Wrangler:
+`astro dev` does not run the Worker. To test `/api/contact` locally, build and run with Wrangler:
 
 ```sh
 npm run build
-RESEND_API_KEY=re_... npx wrangler pages dev dist --local
+AWS_SES_ACCESS_KEY_ID=... \
+AWS_SES_SECRET_ACCESS_KEY=... \
+npx wrangler dev
 ```
 
-Then POST to `http://localhost:8788/api/contact`.
+Then POST to `http://localhost:8787/api/contact`.
 
 ## Deployment
 
-Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the Astro site and runs `wrangler pages deploy dist/`. The `functions/` directory is picked up automatically from the project root.
+Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds the site and runs `wrangler deploy`. The Worker serves `./dist/` as static assets via the `ASSETS` binding and intercepts `/api/*` requests.
 
 Required GitHub secrets:
 
-- `CLOUDFLARE_API_TOKEN` — Pages: Edit permission
-- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_API_TOKEN` — needs `Account → Cloudflare Pages → Edit`, `Account → Workers Scripts → Edit`, `Account → Account Settings → Read`, and `User → User Details → Read`
+- `CLOUDFLARE_ACCOUNT_ID` — `50e564a0884c74905e9312d0f9506c2a`
+
+To deploy manually:
+
+```sh
+npm run build
+npx wrangler deploy
+```

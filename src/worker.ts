@@ -1,16 +1,21 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import { AwsClient } from "aws4fetch";
+
 interface Env {
-  RESEND_API_KEY: string;
+  ASSETS: Fetcher;
+  AWS_SES_ACCESS_KEY_ID?: string;
+  AWS_SES_SECRET_ACCESS_KEY?: string;
+  AWS_SES_SESSION_TOKEN?: string;
+  AWS_SES_REGION?: string;
   CONTACT_RATE_LIMIT?: KVNamespace;
   CONTACT_FROM?: string;
   CONTACT_TO?: string;
 }
 
-type Ctx = EventContext<Env, string, Record<string, unknown>>;
-
-const DEFAULT_FROM = "Brookfield Digital <onboarding@resend.dev>";
+const DEFAULT_FROM = "Brookfield Digital <eric@brkdllc.com>";
 const DEFAULT_TO = "eric@brkdllc.com";
+const DEFAULT_REGION = "us-east-1";
 
 const MAX_NAME = 200;
 const MAX_EMAIL = 200;
@@ -29,7 +34,6 @@ function json(body: unknown, status = 200): Response {
 }
 
 function isEmail(value: string): boolean {
-  // intentionally loose; Resend will reject truly malformed addresses
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
@@ -42,7 +46,11 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
-async function readField(formData: FormData | null, body: Record<string, unknown> | null, key: string): Promise<string> {
+function readField(
+  formData: FormData | null,
+  body: Record<string, unknown> | null,
+  key: string,
+): string {
   if (formData) {
     const v = formData.get(key);
     return typeof v === "string" ? v : "";
@@ -77,8 +85,50 @@ async function checkRateLimit(ip: string, env: Env): Promise<boolean> {
   return true;
 }
 
-export const onRequestPost = async (ctx: Ctx): Promise<Response> => {
-  const { request, env } = ctx;
+async function sendViaSes(
+  env: Env,
+  payload: { from: string; to: string; replyTo: string; subject: string; text: string; html: string },
+): Promise<{ ok: true } | { ok: false; status: number; detail: string }> {
+  const region = env.AWS_SES_REGION || DEFAULT_REGION;
+  const client = new AwsClient({
+    accessKeyId: env.AWS_SES_ACCESS_KEY_ID as string,
+    secretAccessKey: env.AWS_SES_SECRET_ACCESS_KEY as string,
+    sessionToken: env.AWS_SES_SESSION_TOKEN,
+    service: "ses",
+    region,
+  });
+
+  const body = JSON.stringify({
+    FromEmailAddress: payload.from,
+    Destination: { ToAddresses: [payload.to] },
+    ReplyToAddresses: [payload.replyTo],
+    Content: {
+      Simple: {
+        Subject: { Data: payload.subject, Charset: "UTF-8" },
+        Body: {
+          Text: { Data: payload.text, Charset: "UTF-8" },
+          Html: { Data: payload.html, Charset: "UTF-8" },
+        },
+      },
+    },
+  });
+
+  const url = `https://email.${region}.amazonaws.com/v2/email/outbound-emails`;
+  const response = await client.fetch(url, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body,
+  });
+
+  if (response.ok) return { ok: true };
+  const detail = await response.text().catch(() => "");
+  return { ok: false, status: response.status, detail };
+}
+
+async function handleContact(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405, headers: { allow: "POST" } });
+  }
 
   let formData: FormData | null = null;
   let bodyJson: Record<string, unknown> | null = null;
@@ -94,12 +144,11 @@ export const onRequestPost = async (ctx: Ctx): Promise<Response> => {
     return json({ error: "Invalid request body." }, 400);
   }
 
-  const name = (await readField(formData, bodyJson, "name")).trim();
-  const email = (await readField(formData, bodyJson, "email")).trim();
-  const message = (await readField(formData, bodyJson, "message")).trim();
-  const honeypot = (await readField(formData, bodyJson, "website")).trim();
+  const name = readField(formData, bodyJson, "name").trim();
+  const email = readField(formData, bodyJson, "email").trim();
+  const message = readField(formData, bodyJson, "message").trim();
+  const honeypot = readField(formData, bodyJson, "website").trim();
 
-  // Silent drop for bot submissions
   if (honeypot.length > 0) {
     return json({ ok: true });
   }
@@ -124,41 +173,31 @@ export const onRequestPost = async (ctx: Ctx): Promise<Response> => {
     return json({ error: "Too many submissions. Please try again in a few minutes." }, 429);
   }
 
-  if (!env.RESEND_API_KEY) {
+  if (!env.AWS_SES_ACCESS_KEY_ID || !env.AWS_SES_SECRET_ACCESS_KEY) {
     return json({ error: "Email service is not configured." }, 500);
   }
 
   const from = env.CONTACT_FROM || DEFAULT_FROM;
   const to = env.CONTACT_TO || DEFAULT_TO;
-
   const subject = `Contact form: ${name}`;
   const text = `From: ${name} <${email}>\n\n${message}`;
   const html = `<p><strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p><p style="white-space:pre-wrap">${escapeHtml(message)}</p>`;
 
-  const resendResponse = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from,
-      to,
-      reply_to: email,
-      subject,
-      text,
-      html,
-    }),
-  });
-
-  if (!resendResponse.ok) {
-    const detail = await resendResponse.text().catch(() => "");
-    console.error("Resend error", resendResponse.status, detail);
+  const result = await sendViaSes(env, { from, to, replyTo: email, subject, text, html });
+  if (!result.ok) {
+    console.error("SES send failed", result.status, result.detail);
     return json({ error: "Could not send message. Please email eric@brkdllc.com directly." }, 502);
   }
 
   return json({ ok: true });
-};
+}
 
-export const onRequest = (): Response =>
-  new Response("Method Not Allowed", { status: 405, headers: { allow: "POST" } });
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+    if (url.pathname === "/api/contact") {
+      return handleContact(request, env);
+    }
+    return env.ASSETS.fetch(request);
+  },
+} satisfies ExportedHandler<Env>;
