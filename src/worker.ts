@@ -3,6 +3,7 @@
 import { AwsClient } from "aws4fetch";
 
 interface Env {
+  ASSETS: Fetcher;
   AWS_SES_ACCESS_KEY_ID?: string;
   AWS_SES_SECRET_ACCESS_KEY?: string;
   AWS_SES_SESSION_TOKEN?: string;
@@ -11,8 +12,6 @@ interface Env {
   CONTACT_FROM?: string;
   CONTACT_TO?: string;
 }
-
-type Ctx = EventContext<Env, string, Record<string, unknown>>;
 
 const DEFAULT_FROM = "Brookfield Digital <eric@brkdllc.com>";
 const DEFAULT_TO = "eric@brkdllc.com";
@@ -35,7 +34,6 @@ function json(body: unknown, status = 200): Response {
 }
 
 function isEmail(value: string): boolean {
-  // intentionally loose; SES will reject truly malformed addresses
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
@@ -89,14 +87,7 @@ async function checkRateLimit(ip: string, env: Env): Promise<boolean> {
 
 async function sendViaSes(
   env: Env,
-  payload: {
-    from: string;
-    to: string;
-    replyTo: string;
-    subject: string;
-    text: string;
-    html: string;
-  },
+  payload: { from: string; to: string; replyTo: string; subject: string; text: string; html: string },
 ): Promise<{ ok: true } | { ok: false; status: number; detail: string }> {
   const region = env.AWS_SES_REGION || DEFAULT_REGION;
   const client = new AwsClient({
@@ -134,8 +125,10 @@ async function sendViaSes(
   return { ok: false, status: response.status, detail };
 }
 
-export const onRequestPost = async (ctx: Ctx): Promise<Response> => {
-  const { request, env } = ctx;
+async function handleContact(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405, headers: { allow: "POST" } });
+  }
 
   let formData: FormData | null = null;
   let bodyJson: Record<string, unknown> | null = null;
@@ -156,7 +149,6 @@ export const onRequestPost = async (ctx: Ctx): Promise<Response> => {
   const message = readField(formData, bodyJson, "message").trim();
   const honeypot = readField(formData, bodyJson, "website").trim();
 
-  // Silent drop for bot submissions
   if (honeypot.length > 0) {
     return json({ ok: true });
   }
@@ -198,7 +190,14 @@ export const onRequestPost = async (ctx: Ctx): Promise<Response> => {
   }
 
   return json({ ok: true });
-};
+}
 
-export const onRequest = (): Response =>
-  new Response("Method Not Allowed", { status: 405, headers: { allow: "POST" } });
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+    if (url.pathname === "/api/contact") {
+      return handleContact(request, env);
+    }
+    return env.ASSETS.fetch(request);
+  },
+} satisfies ExportedHandler<Env>;
